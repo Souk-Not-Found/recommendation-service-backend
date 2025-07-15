@@ -1,0 +1,29 @@
+{
+  "realm": "event-realm",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "event-client",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "client-secret",
+      "redirectUris": ["*"],
+      "webOrigins": ["*"],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true
+    }
+  ],
+  "users": [
+    {
+      "username": "service-user",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "service-password"
+        }
+      ],
+      "realmRoles": ["user"]
+    }
+  ]
+}

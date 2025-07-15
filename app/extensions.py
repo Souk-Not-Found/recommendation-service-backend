@@ -1,6 +1,5 @@
-# app/extensions.py
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+import py_eureka_client.eureka_client as eureka_client
 
 db = SQLAlchemy()
-migrate = Migrate()
+# No need to initialize Eureka here - we'll do it in app factory

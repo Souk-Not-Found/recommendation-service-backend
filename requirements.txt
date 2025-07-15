@@ -1,8 +1,7 @@
-Flask
-flask-restx
+flask
 flask-sqlalchemy
-flask-cors
-psycopg2-binary
 scikit-learn
-pandas
-pytest
+sentence-transformers
+numpy
+gunicorn
+py-eureka-client
