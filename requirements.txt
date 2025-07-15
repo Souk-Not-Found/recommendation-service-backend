@@ -1,0 +1,8 @@
+Flask
+flask-restx
+flask-sqlalchemy
+flask-cors
+psycopg2-binary
+scikit-learn
+pandas
+pytest
