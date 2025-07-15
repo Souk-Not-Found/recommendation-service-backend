@@ -1,23 +1,26 @@
-# Stage 1: Build
-FROM python:3.9-slim as builder
+# Single-stage build using slim image
+FROM python:3.9-slim
 
 WORKDIR /app
-COPY requirements.txt .
 
+# Install system dependencies first
 RUN apt-get update && \
     apt-get install -y --no-install-recommends gcc python3-dev && \
-    pip install --user -r requirements.txt
+    rm -rf /var/lib/apt/lists/*
 
-# Stage 2: Runtime
-FROM python:3.9-alpine
+# Copy requirements first for better layer caching
+COPY requirements.txt .
 
-WORKDIR /app
-COPY --from=builder /root/.local /root/.local
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
 COPY . .
 
-ENV PATH=/root/.local/bin:$PATH
-ENV FLASK_APP=run.py
-ENV FLASK_ENV=production
+# Environment variables
+ENV FLASK_APP=run.py \
+    FLASK_ENV=production \
+    PYTHONPATH=/app
 
 EXPOSE 5000
 
