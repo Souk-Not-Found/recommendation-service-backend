@@ -4,14 +4,8 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - FLASK_APP
-      - FLASK_ENV
-      - SQLALCHEMY_DATABASE_URI
-      - EUREKA_SERVER_URL
-      - APP_NAME
-      - SERVER_PORT
-      - INSTANCE_HOST
-
+      DATABASE_URI: postgresql://postgres:anas2000@db/recommendation_db
+      EUREKA_SERVER_URL: http://eureka-server:8761/eureka
     depends_on:
       - db
       - eureka-server
@@ -40,9 +34,6 @@ services:
     image: my-api-gateway
     ports:
       - "9000:9000"
-    depends_on:
-      - recommendation-service
-      - eureka-server
     networks:
       - event-network
 
@@ -52,3 +43,4 @@ volumes:
 networks:
   event-network:
     driver: bridge
+    name: event-network
