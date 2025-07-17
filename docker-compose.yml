@@ -1,14 +1,11 @@
-version: '3.8'
-
 services:
-  event-recommendation-service:
+  recommendation-service:
     build: .
     ports:
       - "5000:5000"
     environment:
-      - DATABASE_URI=postgresql://postgres:anas2000@db/recommendation_db
-      - KEYCLOAK_URL=http://keycloak:8080/auth
-      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka
+      DATABASE_URI: postgresql://postgres:anas2000@db/recommendation_db
+      EUREKA_SERVER_URL: http://eureka-server:8761/eureka
     depends_on:
       - db
       - eureka-server
@@ -16,21 +13,30 @@ services:
       - event-network
 
   db:
-    image: postgres:13
+    image: postgres:17
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=anas2000
-      - POSTGRES_DB=recommendation_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: anas2000
+      POSTGRES_DB: recommendation_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - event-network
 
-  
   eureka-server:
-    image: flaskcloud/eureka
+    image: my-eureka-server  
     ports:
       - "8761:8761"
+    networks:
+      - event-network
+
+  api-gateway:
+    image: my-api-gateway
+    ports:
+      - "9000:9000"
+    depends_on:
+      - recommendation-service
+      - eureka-server
     networks:
       - event-network
 
@@ -40,3 +46,4 @@ volumes:
 networks:
   event-network:
     driver: bridge
+    name: event-network

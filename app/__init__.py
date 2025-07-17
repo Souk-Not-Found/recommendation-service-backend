@@ -10,6 +10,7 @@ def create_app():
     # Initialize database
     db.init_app(app)
     
+
     # Initialize Eureka client with proper configuration
     register_with_eureka(app)
     
@@ -20,21 +21,22 @@ def create_app():
     return app
 
 def register_with_eureka(app):
-    """Helper function to register with Eureka server"""
+    """Register this service with Eureka server"""
     try:
         eureka_client.init(
-            eureka_server=app.config.get('EUREKA_SERVER_URL', "http://localhost:8761/eureka"),
-            app_name=app.config.get('APP_NAME', "recommendation-service"),
-            instance_port=app.config.get('INSTANCE_PORT', 5000),
-            instance_host=app.config.get('INSTANCE_HOST', "localhost"),
-            renewal_interval_in_secs=30,
-            duration_in_secs=90,
+            eureka_server=app.config['EUREKA_SERVER_URL'],
+            app_name="event-recommendation-service",  # Must match gateway config
+            instance_port=app.config['INSTANCE_PORT'],
+            instance_host=app.config['INSTANCE_HOST'],
+            renewal_interval_in_secs=10,
+            duration_in_secs=30,
             metadata={
-                "management.port": str(app.config.get('INSTANCE_PORT', 5000)),
-                "healthCheckUrl": f"http://{app.config.get('INSTANCE_HOST', 'localhost')}:{app.config.get('INSTANCE_PORT', 5000)}/health"
+                "management.port": str(app.config['INSTANCE_PORT']),
+                "healthCheckUrl": f"http://{app.config['INSTANCE_HOST']}:{app.config['INSTANCE_PORT']}/health",
+                "statusPageUrl": f"http://{app.config['INSTANCE_HOST']}:{app.config['INSTANCE_PORT']}/health"
             }
         )
-        app.logger.info("Successfully registered with Eureka")
+        app.logger.info(f"✅ Registered as event-recommendation-service at {app.config['INSTANCE_HOST']}:{app.config['INSTANCE_PORT']}")
     except Exception as e:
-        app.logger.error(f"Failed to register with Eureka: {str(e)}")
-        # Continue running even if Eureka registration fails
+        app.logger.error(f"❌ Eureka registration failed: {str(e)}")
+        # Implement retry logic here if needed

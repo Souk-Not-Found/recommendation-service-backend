@@ -1,5 +1,5 @@
 from py_eureka_client import eureka_client
-from flask import current_app
+
 
 def init_eureka(app):
     try:

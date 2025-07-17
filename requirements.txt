@@ -5,3 +5,5 @@ sentence-transformers
 numpy
 gunicorn
 py-eureka-client
+flask_cors
+psycopg2-binary

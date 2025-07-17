@@ -6,6 +6,7 @@ class Config:
     
     # Eureka configuration
     EUREKA_SERVER_URL = os.getenv("EUREKA_SERVER_URL", "http://localhost:8761/eureka")
-    APP_NAME = os.getenv("APP_NAME", "recommendation-service")
+    APP_NAME = os.getenv("APP_NAME", "event-recommendation-service")
     INSTANCE_PORT = int(os.getenv("SERVER_PORT", 5000))
     INSTANCE_HOST = os.getenv("INSTANCE_HOST", "localhost")
+    ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:4200")
